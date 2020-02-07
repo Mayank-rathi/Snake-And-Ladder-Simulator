@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash 
 echo "Welcome To Snake And Ladder Simulator"
 
 #CONSTANT
@@ -8,19 +8,38 @@ NO_PLAY=1
 LADDER=2
 SNAKE=3
 #VARIABLE
+die=0
 updatePosition=$START_POSITION	
 
 #For Rolling dice
 function dieRoll()
 {
 	die=$((RANDOM%6+1)); 
+	((dice++))
 }
-#Wining Position Till 100
+#Wining Position Till 100, dice count and it's dice position
 function winingPosition(){
 	while [[ $updatePosition -lt $WINING_POSITION ]]
 	do
 		checkOption
+		echo "count die $dice  and position is $updatePosition"
 	done
+}
+#Exact position Till 100
+function exactPositionForWining()
+{
+	if(($updatePosition>$WINING_POSITION))
+		then
+		updatePosition=$(($updatePosition-$die))      
+	fi
+}
+
+#If value Above WINING_POSITION THEN RESTART
+function resetToStart(){
+	if [[ $updatePosition -lt 0 ]]
+	then
+		updatePosition=$START_POSITION
+	fi
 }
 
 #Check for option And case 1)NO_PLAYE 2)LADDER 3)SNAKE
@@ -31,23 +50,14 @@ function checkOption()
 	case $option in
 		$NO_PLAY)
 			updatePosition=$updatePosition
-			echo "same"
 			;;
 		$LADDER)
 			updatePosition=$(($updatePosition+die))
-			echo "ladder"
-			if(($updatePosition>$WINING_POSITION))
-			then
-				updatePosition=$(($updatePosition-$die))
-			fi
+			exactPositionForWining
 			;;
 		$SNAKE)
 			updatePosition=$(($updatePosition-die))
-			echo "snake"
-			if [[ $updatePosition -lt 0 ]]
-			then
-				updatePosition=$START_POSITION
-			fi
+			resetToStart
 			;;
 	esac
 }
