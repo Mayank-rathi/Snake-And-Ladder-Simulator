@@ -4,3 +4,4 @@ echo "Welcome To Snake And Ladder Simulator"
 NO_OF_PLAYER=1
 START_POSITION=0
 
+die=$((RANDOM%6+1))
