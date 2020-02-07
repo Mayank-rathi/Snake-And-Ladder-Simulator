@@ -8,16 +8,14 @@ NO_PLAY=1
 LADDER=2
 SNAKE=3
 #VARIABLE
-position=$START_POSITION
 updatePosition=$START_POSITION	
-
 
 #For Rolling dice
 function dieRoll()
 {
 	die=$((RANDOM%6+1)); 
 }
-
+#Wining Position Till 100
 function winingPosition(){
 	while [[ $updatePosition -lt $WINING_POSITION ]]
 	do
@@ -25,6 +23,7 @@ function winingPosition(){
 	done
 }
 
+#Check for option And case 1)NO_PLAYE 2)LADDER 3)SNAKE
 function checkOption()
 {
 	option=$((RANDOM%3+1))
@@ -37,6 +36,10 @@ function checkOption()
 		$LADDER)
 			updatePosition=$(($updatePosition+die))
 			echo "ladder"
+			if(($updatePosition>$WINING_POSITION))
+			then
+				updatePosition=$(($updatePosition-$die))
+			fi
 			;;
 		$SNAKE)
 			updatePosition=$(($updatePosition-die))
@@ -47,6 +50,5 @@ function checkOption()
 			fi
 			;;
 	esac
-
 }
 winingPosition
